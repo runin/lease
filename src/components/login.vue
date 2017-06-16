@@ -3,13 +3,13 @@
         <section class="wrap" id="wrap" v-bind:data-type="pageType" v-bind:login-type="loginType">
             <img class="logo" src="../../static/images/logo.png" />
             <div class="horizontal master-guest">
-                <div id="master" v-bind:masterCode="masterCode" v-bind:class="{ right: isRight }" v-tap="{ methods: toggle }"></div>
-                <div id="guest" v-bind:guesCode="guesCode" v-bind:class="{ right: !isRight }" v-tap="{ methods: toggle }"></div>
+                <div v-bind:class="{ right: isRight }" v-tap="{ methods: toggle }"></div>
+                <div v-bind:class="{ right: !isRight }" v-tap="{ methods: toggle }"></div>
             </div>
             <div class="login" login-type="message">
-                <p><img src="../../static/images/icon2.png"><input id="mobile" type="number" placeholder="请输入手机号码"/><i></i></p>
-                <p id="message-p" class="message-p"><img src="../../static/images/icon3.png"><input id="code" type="text" placeholder="请输入验证码"/><label id="get-code" v-tap="{ methods: getCode }">短信验证码</label></p>
-                <p class="password-p" id="password-p"><img src="../../static/images/icon3.png"><input id="password" type="password" placeholder="请输入密码（6-15位字母与数字）"/></p>
+                <p><img src="../../static/images/icon2.png"><input ref="mobile" type="number" placeholder="请输入手机号码"/><i></i></p>
+                <p id="message-p" class="message-p"><img src="../../static/images/icon3.png"><input ref="code" type="text" placeholder="请输入验证码"/><label id="get-code" v-tap="{ methods: getCode }">短信验证码</label></p>
+                <p class="password-p" id="password-p"><img src="../../static/images/icon3.png"><input ref="password" type="password" placeholder="请输入密码（6-15位字母与数字）"/></p>
             </div>
             <a href="#" id="reg-btn" class="button reg-btn">注册</a>
             <a href="#" id="login-btn" class="button login-btn">登录</a>
@@ -25,16 +25,14 @@
 
         <section id="password-set" class="password-set none">
             <img src="../../static/images/logo.png" />
-            <p><input type="password" id="password-confirm" placeholder="请输入密码（6-15位字母与数字）"/><label>设置登录密码，可更好的保障账号信息安全</label></p>
+            <p><input type="password" ref="passWordConfirm" placeholder="请输入密码（6-15位字母与数字）"/><label>设置登录密码，可更好的保障账号信息安全</label></p>
             <a href="#" id="confirm" class="button">确认</a>
         </section>
     </section>
 </template>
 
 <script>
-    import Vue from "vue"
-    import vueResource from 'vue-resource'
-    Vue.use(vueResource);
+
     export default {
         name: 'index',
         data () {
@@ -42,14 +40,68 @@
                 pageType: 'reg',
                 loginType: 'message',
                 isRight: true,
-                masterCode: 0,
-                guesCode: 1,
                 customerType: 0, //0-房东 1-租客
             }
         },
         methods:{
             init(){
                 console.log('my name is init');
+            },
+            verify(loginType){
+                var that = this;
+                var refs = that.$refs;
+
+                    passWordVal = refs.passWord.value.trim(),
+                    passWordConfirmVal = refs.passWordConfirm.value.trim(),
+                    telReg = /^\d{11}$/,
+                    passWordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,15}$/;
+                switch (loginType){
+                    case 'message'://手机+验证码
+                        var mobileVal = refs.mobile.value.trim(),
+                            codeVal = refs.code.value.trim();
+
+                        if (!telReg.test(mobileVal)) {
+                            showTips('输入正确手机号码');
+                            res.mobile.focus();
+                            return false;
+                        }
+                        if (codeVal == '') {
+                            showTips('请填写验证码');
+                            refs.code.focus();
+                            return  false;
+                        }
+                        return true;
+                        break;
+                    case 'password'://手机+密码
+                        if (!telReg.test(mobileVal)) {
+                            showTips('输入正确手机号码');
+                            refs.mobile.focus();
+                            return false;
+                        }
+                        if(!passWordReg.test(passWordVal)||passWordVal.length<6||passWordVal.length>15){
+                            showTips('密码为6-15位的数字和字母的组合');
+                            refs.passWord.focus();
+                            return false;
+                        }
+                        return true;
+                        break;
+                    case 'onePassword'://密码
+                        if(!passWordReg.test(passWordConfirmVal)||passWordConfirmVal.length<6||passWordConfirmVal.length>15){
+                            showTips('密码必须为6-15位的数字和字母的组合');
+                            refs.passWord.focus();
+                            return false;
+                        }
+                        return true;
+                        break;
+                    case 'oneMobile'://手机号码
+                        if (!telReg.test(mobileVal)) {
+                            showTips('输入正确手机号码');
+                            refs.mobile.focus();
+                            return false;
+                        }
+                        return true;
+                        break;
+                }
             },
             toggle(){
                 var that = this;
@@ -61,32 +113,14 @@
                 if(params.loginType) this.loginType = params.loginType;
             },
             getCode(){
-                var callbackQueryHouseVillageHandler = function (data) {
-                    alert(1);
-                }
-                this.$http.jsonp('http://chuzb.cn/lease/api/house/houseArea?dev=test', {
-                    params:{
-                        cn: '深圳市'
-                    }, emulateJSON: true,
-                    headers: {},
-                    jsonpCallback: 'callbackQueryHouseVillageHandler'
-                    }).then(function(result) {
-                        console.log('')
-                    // 这里是处理正确的回调
-
-                }, function(response) {
-                    // 这里是处理错误的回调
-                    console.log(response)
-                });
-
-
-
+                this.verify('oneMobile');
             }
         },
         created(){
             this.init();
         }
     }
+
 </script>
 
 <style scoped>

@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import vueTap from 'v-tap'
 import VueRouter from 'vue-router'
+import vueResource from 'vue-resource'
+import { Promise } from 'es6-promise'
 
 import App from './App.vue'
 import Index from './components/index.vue'
@@ -13,6 +15,7 @@ Vue.config.productionTip = false;
 
 Vue.use(vueTap);
 Vue.use(VueRouter);
+Vue.use(vueResource);
 
 const routes = [
     { path: '/', name: 'index', component: Index },
