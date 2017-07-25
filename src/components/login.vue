@@ -1,15 +1,15 @@
 <template>
-    <section class="wrap-page">
+    <section class="wrap-page" id="login">
         <section class="wrap" id="wrap" v-bind:data-type="pageType" v-bind:login-type="loginType">
-            <img class="logo" src="../../static/images/logo.png" />
+            <img class="logo" src="../assets/images/logo.png" />
             <div class="horizontal master-guest">
                 <div v-bind:class="{ right: isRight }" v-tap="{ methods: toggle }"></div>
                 <div v-bind:class="{ right: !isRight }" v-tap="{ methods: toggle }"></div>
             </div>
             <div class="login" login-type="message">
-                <p><img src="../../static/images/icon2.png"><input ref="mobile" v-model="mobile" type="number" placeholder="请输入手机号码"/><i></i></p>
-                <p id="message-p" class="message-p"><img src="../../static/images/icon3.png"><input ref="code" v-model="code" type="text" placeholder="请输入验证码"/><label id="get-code" v-bind:class="{ disabled: codeDisabled }" v-tap="{ methods: getCode }">{{ coedText }}</label></p>
-                <p class="password-p" id="password-p"><img src="../../static/images/icon3.png"><input ref="password" v-model="password" type="password" placeholder="请输入密码（6-15位字母与数字）"/></p>
+                <p><img src="../assets/images/icon2.png"><input ref="mobile" v-model="mobile" type="number" placeholder="请输入手机号码"/><i></i></p>
+                <p id="message-p" class="message-p"><img src="../assets/images/icon3.png"><input ref="code" v-model="code" type="text" placeholder="请输入验证码"/><label id="get-code" v-bind:class="{ disabled: codeDisabled }" v-tap="{ methods: getCode }">{{ coedText }}</label></p>
+                <p class="password-p" id="password-p"><img src="../assets/images/icon3.png"><input ref="password" v-model="password" type="password" placeholder="请输入密码（6-15位字母与数字）"/></p>
             </div>
             <a href="#" id="reg-btn" v-tap="{ methods: register }" class="button reg-btn">注册</a>
             <a href="#" id="login-btn" class="button login-btn" v-tap="{ methods: loginBtn}">登录</a>
@@ -24,7 +24,7 @@
         </section>
 
         <section id="password-set" class="password-set none">
-            <img src="../../static/images/logo.png" />
+            <img src="../assets/images/logo.png" />
             <p><input type="password" ref="passWordConfirm" v-model="passWordConfirm" placeholder="请输入密码（6-15位字母与数字）"/><label>设置登录密码，可更好的保障账号信息安全</label></p>
             <a href="#" id="confirm" class="button">确认</a>
         </section>
@@ -34,7 +34,7 @@
 <script>
 import api from '../api/api'
     export default {
-        name: 'index',
+        name: 'login',
         data () {
             return {
                 pageType: 'reg',/*注册标识-reg 登录标识-login*/
@@ -198,7 +198,7 @@ import api from '../api/api'
         width: 144px;
         height: 144px;
         border-radius: 72px;
-        background: url("../../static/images/icon1.png") center no-repeat;
+        background: url("../assets/images/icon1.png") center no-repeat;
         position: relative;
     }
     .master-guest div img{
@@ -235,7 +235,7 @@ import api from '../api/api'
         width: 144px;
         height: 144px;
         border-radius: 72px;
-        background: url(../../static/images/icon1ed.png) center no-repeat;
+        background: url(../assets/images/icon1ed.png) center no-repeat;
         position: absolute;
         top: 0;
         z-index: 1;

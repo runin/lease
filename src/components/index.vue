@@ -509,7 +509,7 @@
         display: block;
         width: 29px;
         height: 49px;
-        background: url(../../static/images/icon-user.png) 0 -268px no-repeat;
+        background: url(../assets/images/icon-user.png) 0 -268px no-repeat;
         background-size: 62px;
         position: absolute;
         right: -2px;
